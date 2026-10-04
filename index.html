@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0f172a">
+  <title>FinWise</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header>
+    <h1>FinWise</h1>
+    <p class="tagline" data-i18n="tagline">Учёт доходов и расходов</p>
+
+    <div class="header-controls">
+      <div class="currency-selector">
+        <label for="currency" data-i18n="currency">Валюта:</label>
+        <select id="currency">
+          <option value="BYN">BYN</option>
+          <option value="RUB">RUB</option>
+          <option value="USD">USD</option>
+          <option value="EUR">EUR</option>
+        </select>
+      </div>
+      <button id="settings-btn" class="icon-btn" title="Настройки">⚙️</button>
+      <button id="theme-toggle" class="icon-btn" title="Тема">🌙</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- 1. Итоги -->
+    <section class="summary">
+      <div class="card">
+        <span data-i18n="balance">Баланс</span>
+        <strong id="balance">0</strong>
+      </div>
+      <div class="card income">
+        <span data-i18n="income">Доходы</span>
+        <strong id="total-income">0</strong>
+      </div>
+      <div class="card expense">
+        <span data-i18n="expense">Расходы</span>
+        <strong id="total-expense">0</strong>
+      </div>
+    </section>
+
+    <!-- 2. Бюджет на месяц -->
+    <section class="budget-section">
+      <h2 data-i18n="budget_title">Бюджет на месяц</h2>
+      <div class="budget-row">
+        <label for="budget-input" data-i18n="budget_limit">Лимит расходов:</label>
+        <input type="number" id="budget-input" placeholder="30000" min="0">
+        <button id="save-budget" data-i18n="save">Сохранить</button>
+      </div>
+      <div class="budget-progress">
+        <div class="progress-bar">
+          <div class="progress-fill" id="progress-fill"></div>
+        </div>
+        <p class="progress-text" id="progress-text" data-i18n="budget_not_set">Лимит не задан</p>
+      </div>
+    </section>
+
+    <!-- 3. Добавить операцию -->
+    <section class="form-section">
+      <h2 id="form-title" data-i18n="add_operation">Добавить операцию</h2>
+      <form id="operation-form">
+        <input type="hidden" id="edit-id">
+
+        <input type="date" id="date" required>
+
+        <select id="type" required>
+          <option value="income" data-i18n="income">Доход</option>
+          <option value="expense" data-i18n="expense">Расход</option>
+        </select>
+
+        <select id="category" required>
+          <option value="">— Категория —</option>
+        </select>
+
+        <input type="number" id="amount" placeholder="Сумма" min="0" step="0.01" required>
+        <input type="text" id="comment" placeholder="Комментарий">
+
+        <button type="submit" id="submit-btn" data-i18n="add">Добавить</button>
+        <button type="button" id="cancel-edit-btn" class="cancel-btn" style="display:none;" data-i18n="cancel">Отменить</button>
+      </form>
+    </section>
+
+    <!-- 4. Платежи и цели накоплений -->
+    <section class="payments-goals-section">
+      <h2 data-i18n="payments_goals_title">Платежи и цели накоплений</h2>
+
+      <!-- Регулярные платежи -->
+      <div class="subsection">
+        <h3 data-i18n="recurring_title">Регулярные платежи</h3>
+
+        <div class="recurring-summary">
+          <div class="recurring-stat">
+            <span data-i18n="recurring_monthly">В месяц:</span>
+            <strong id="recurring-monthly">0</strong>
+          </div>
+          <div class="recurring-stat">
+            <span data-i18n="recurring_yearly">В год:</span>
+            <strong id="recurring-yearly">0</strong>
+          </div>
+          <div class="recurring-stat">
+            <span data-i18n="recurring_next">Ближайшее:</span>
+            <strong id="recurring-next">—</strong>
+          </div>
+        </div>
+
+        <form id="recurring-form" class="recurring-form">
+          <input type="text" id="recurring-name" placeholder="Netflix, аренда..." required>
+
+          <select id="recurring-category" required>
+            <option value="">— Категория —</option>
+          </select>
+
+          <input type="number" id="recurring-amount" placeholder="Сумма" min="0" step="0.01" required>
+
+          <select id="recurring-day" required></select>
+
+          <button type="submit" data-i18n="add_recurring">Добавить</button>
+        </form>
+
+        <div id="recurring-list" class="recurring-list"></div>
+        <p id="no-recurring" class="empty-msg" data-i18n="no_recurring">Пока нет регулярных платежей</p>
+      </div>
+
+      <!-- Цели накоплений -->
+      <div class="subsection">
+        <h3 data-i18n="goals_title">Цели накоплений</h3>
+
+        <form id="goal-form" class="goal-form">
+          <input type="text" id="goal-name" placeholder="Например: Отпуск" required>
+          <input type="number" id="goal-target" placeholder="Цель (сумма)" min="0" step="0.01" required>
+          <input type="number" id="goal-current" placeholder="Уже накоплено" min="0" step="0.01" value="0">
+          <button type="submit" data-i18n="add_goal">Добавить цель</button>
+        </form>
+
+        <div id="goals-list" class="goals-list"></div>
+        <p id="no-goals" class="empty-msg" data-i18n="no_goals">Пока нет целей. Добавь первую!</p>
+      </div>
+    </section>
+
+    <!-- 5. Фильтр -->
+    <section class="filter-section">
+      <h2 data-i18n="filter_title">Фильтр</h2>
+      <div class="filter-row">
+        <label for="filter-month" data-i18n="month">Месяц:</label>
+        <input type="month" id="filter-month">
+        <button id="clear-filter" data-i18n="show_all">Показать все</button>
+      </div>
+    </section>
+
+    <!-- 6. Таблица -->
+    <section class="table-section">
+      <h2 data-i18n="history">История операций</h2>
+      <table id="operations-table">
+        <thead>
+          <tr>
+            <th data-i18n="date">Дата</th>
+            <th data-i18n="type">Тип</th>
+            <th data-i18n="category">Категория</th>
+            <th data-i18n="amount">Сумма</th>
+            <th data-i18n="comment">Комментарий</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="table-body"></tbody>
+      </table>
+      <p id="empty-message" class="empty-msg" data-i18n="no_operations">Пока нет операций. Добавь первую!</p>
+    </section>
+
+    <!-- 7. Совет -->
+    <section class="tip">
+      <h2 data-i18n="tip_title">Совет по финансовой грамотности</h2>
+      <p id="tip-text"></p>
+      <button id="new-tip" data-i18n="another_tip">Другой совет</button>
+    </section>
+  </main>
+
+  <!-- Модальное окно настроек -->
+  <div id="settings-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 data-i18n="settings">Настройки</h2>
+        <button class="close-btn" id="close-settings">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="setting-row">
+          <label for="lang-select" data-i18n="language">Язык:</label>
+          <select id="lang-select">
+            <option value="ru">Русский</option>
+            <option value="en">English</option>
+          </select>
+        </div>
+
+        <div class="setting-row">
+          <label for="theme-select" data-i18n="theme">Тема:</label>
+          <select id="theme-select">
+            <option value="light" data-i18n="theme_light">Светлая</option>
+            <option value="dark" data-i18n="theme_dark">Тёмная</option>
+          </select>
+        </div>
+
+        <div class="setting-row">
+          <label data-i18n="data_actions">Данные:</label>
+          <div class="data-buttons">
+            <button id="export-btn" data-i18n="export">Экспорт</button>
+            <button id="import-btn" data-i18n="import">Импорт</button>
+            <button id="clear-all-btn" class="danger-btn" data-i18n="clear_all">Очистить всё</button>
+          </div>
+          <input type="file" id="import-file" accept="application/json" style="display:none;">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

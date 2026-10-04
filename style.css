@@ -1,0 +1,808 @@
+/* ============ БАЗА ============ */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ============ ПЕРЕМЕННЫЕ ТЕМ ============ */
+:root {
+  --bg: #eef1f5;
+  --card-bg: #ffffff;
+  --text: #1a2332;
+  --text-muted: #667085;
+  --border: #d0d5dd;
+  --accent: #2563eb;
+  --accent-hover: #1d4ed8;
+  --input-bg: #ffffff;
+  --shadow: 0 1px 3px rgba(16, 24, 40, 0.06);
+  --income: #059669;
+  --expense: #dc2626;
+  --progress-bg: #f2f4f7;
+}
+
+[data-theme="dark"] {
+  --bg: #0f172a;
+  --card-bg: #1e293b;
+  --text: #e2e8f0;
+  --text-muted: #94a3b8;
+  --border: #334155;
+  --accent: #3b82f6;
+  --accent-hover: #60a5fa;
+  --input-bg: #0f172a;
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  --income: #34d399;
+  --expense: #f87171;
+  --progress-bg: #334155;
+}
+
+/* ============ БАЗА С ПЕРЕМЕННЫМИ ============ */
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+  padding: 24px 16px;
+  transition: background 0.3s, color 0.3s;
+}
+
+header {
+  max-width: 900px;
+  margin: 0 auto 28px;
+}
+
+header h1 {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.02em;
+}
+
+.tagline {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-top: 4px;
+  margin-bottom: 12px;
+  letter-spacing: 0.02em;
+}
+
+main {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* ============ ОБЩИЕ СЕКЦИИ ============ */
+.budget-section,
+.form-section,
+.filter-section,
+.table-section,
+.tip,
+.payments-goals-section {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 24px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow);
+  color: var(--text);
+  transition: background 0.3s, box-shadow 0.3s;
+}
+
+.budget-section h2,
+.form-section h2,
+.filter-section h2,
+.table-section h2,
+.tip h2,
+.payments-goals-section > h2 {
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ============ ИТОГИ (КАРТОЧКИ) ============ */
+.summary {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-left: 4px solid var(--accent);
+  box-shadow: var(--shadow);
+  transition: background 0.3s, box-shadow 0.3s;
+}
+
+.card span {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 500;
+}
+
+.card strong {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.card.income { border-left-color: var(--income); }
+.card.income strong { color: var(--income); }
+.card.expense { border-left-color: var(--expense); }
+.card.expense strong { color: var(--expense); }
+
+/* ============ ПОЛЯ И КНОПКИ ============ */
+form {
+  display: grid;
+  gap: 12px;
+}
+
+input, select, button {
+  padding: 12px 14px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  font-size: 0.95rem;
+  font-family: inherit;
+  width: 100%;
+  background: var(--input-bg);
+  color: var(--text);
+  transition: border-color 0.15s, box-shadow 0.15s, background 0.3s;
+}
+
+input:focus, select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+button {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  transition: background 0.15s;
+}
+
+button:hover { background: var(--accent-hover); }
+
+/* ============ БЮДЖЕТ ============ */
+.budget-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.budget-row label {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.budget-row input {
+  flex: 1;
+  min-width: 120px;
+}
+
+.budget-row button {
+  width: auto;
+  padding: 12px 20px;
+}
+
+.progress-bar {
+  background: var(--progress-bg);
+  border-radius: 999px;
+  height: 20px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #10b981, #34d399);
+  border-radius: 999px;
+  transition: width 0.4s ease, background 0.4s ease;
+}
+
+.progress-fill.warning { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+.progress-fill.danger { background: linear-gradient(90deg, #dc2626, #ef4444); }
+
+.progress-text {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-align: right;
+}
+
+/* ============ ФИЛЬТР ============ */
+.filter-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.filter-row label {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.filter-row input {
+  flex: 1;
+  min-width: 150px;
+  max-width: 220px;
+}
+
+.filter-row button {
+  width: auto;
+  padding: 12px 20px;
+  background: var(--progress-bg);
+  color: var(--text);
+}
+
+.filter-row button:hover { background: var(--border); }
+
+/* ============ КНОПКА "ОТМЕНИТЬ" ============ */
+.cancel-btn {
+  background: transparent !important;
+  color: var(--text-muted) !important;
+  border: 1px solid var(--border) !important;
+}
+
+.cancel-btn:hover {
+  background: var(--progress-bg) !important;
+  color: var(--text) !important;
+}
+
+/* ============ ТАБЛИЦА ============ */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+th, td {
+  text-align: left;
+  padding: 12px 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+th {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  font-weight: 600;
+  background: var(--progress-bg);
+}
+
+.income-row td:nth-child(4) { color: var(--income); font-weight: 600; }
+.expense-row td:nth-child(4) { color: var(--expense); font-weight: 600; }
+
+.edit-btn, .delete-btn {
+  background: transparent !important;
+  border: none !important;
+  font-size: 1rem;
+  padding: 4px 6px;
+  width: auto;
+  cursor: pointer;
+  color: var(--text-muted);
+  transition: color 0.15s;
+}
+
+.edit-btn:hover { color: var(--accent) !important; }
+.delete-btn:hover { color: var(--expense) !important; }
+
+#empty-message, .empty-msg {
+  text-align: center;
+  color: var(--text-muted);
+  margin-top: 16px;
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
+/* ============ СОВЕТ ============ */
+.tip p {
+  margin-bottom: 16px;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.tip button {
+  width: auto;
+  padding: 10px 20px;
+  font-size: 0.85rem;
+  background: var(--progress-bg);
+  color: var(--text);
+}
+
+.tip button:hover { background: var(--border); }
+
+/* ============ ВЫБОР ВАЛЮТЫ ============ */
+.currency-selector {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.currency-selector label {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.currency-selector select {
+  width: auto;
+  min-width: 100px;
+  padding: 8px 12px;
+  font-size: 0.9rem;
+}
+
+/* ============ КНОПКИ-ИКОНКИ В ШАПКЕ ============ */
+.header-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.icon-btn {
+  width: auto !important;
+  padding: 8px 12px;
+  font-size: 1.1rem;
+  background: var(--card-bg) !important;
+  color: var(--text) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.icon-btn:hover {
+  background: var(--accent) !important;
+  color: #fff !important;
+  border-color: var(--accent) !important;
+}
+
+/* ============ ОБЪЕДИНЁННЫЙ БЛОК: ПЛАТЕЖИ И ЦЕЛИ ============ */
+.payments-goals-section {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 24px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow);
+  color: var(--text);
+  transition: background 0.3s, box-shadow 0.3s;
+}
+
+.payments-goals-section > h2 {
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 24px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.subsection {
+  padding-bottom: 24px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+}
+
+.subsection:last-child {
+  padding-bottom: 0;
+  margin-bottom: 0;
+  border-bottom: none;
+}
+
+.subsection h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: var(--text);
+}
+
+/* ============ РЕГУЛЯРНЫЕ ПЛАТЕЖИ ============ */
+.recurring-summary {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  margin-bottom: 20px;
+  padding: 14px;
+  background: var(--progress-bg);
+  border-radius: 8px;
+}
+
+@media (min-width: 640px) {
+  .recurring-summary {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.recurring-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.recurring-stat span {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 500;
+}
+
+.recurring-stat strong {
+  font-size: 1rem;
+  color: var(--text);
+  font-weight: 600;
+}
+
+.recurring-form {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.recurring-form button {
+  background: var(--accent) !important;
+  color: #fff !important;
+  border: none !important;
+  width: 100%;
+}
+
+.recurring-form button:hover {
+  background: var(--accent-hover) !important;
+}
+
+@media (min-width: 640px) {
+  .recurring-form {
+    grid-template-columns: 2fr 1fr 1fr 1fr auto;
+  }
+  .recurring-form button {
+    width: auto;
+    padding: 12px 20px;
+    white-space: nowrap;
+  }
+}
+
+.recurring-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.recurring-item {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  align-items: center;
+  background: var(--progress-bg);
+  border-radius: 8px;
+  padding: 14px;
+  border-left: 4px solid var(--expense);
+}
+
+.recurring-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.recurring-name {
+  font-weight: 600;
+  color: var(--text);
+  font-size: 0.95rem;
+}
+
+.recurring-meta {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.recurring-amount {
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--expense);
+}
+
+.recurring-actions {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.recurring-actions button {
+  width: auto;
+  padding: 6px 10px;
+  font-size: 0.8rem;
+  background: transparent !important;
+  color: var(--text-muted) !important;
+  border: 1px solid var(--border) !important;
+  white-space: nowrap;
+}
+
+.recurring-actions button:hover {
+  background: var(--accent) !important;
+  color: #fff !important;
+  border-color: var(--accent) !important;
+}
+
+.recurring-actions .del-recurring:hover {
+  background: var(--expense) !important;
+  border-color: var(--expense) !important;
+}
+
+/* ============ ЦЕЛИ НАКОПЛЕНИЙ ============ */
+.goal-form {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.goal-form button {
+  background: var(--accent) !important;
+  color: #fff !important;
+  border: none !important;
+  width: 100%;
+}
+
+.goal-form button:hover {
+  background: var(--accent-hover) !important;
+}
+
+@media (min-width: 640px) {
+  .goal-form {
+    grid-template-columns: 2fr 1fr 1fr auto;
+  }
+  .goal-form button {
+    width: auto;
+    padding: 12px 20px;
+    white-space: nowrap;
+  }
+}
+
+.goals-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.goal-item {
+  background: var(--progress-bg);
+  border-radius: 10px;
+  padding: 16px;
+  border-left: 4px solid var(--accent);
+}
+
+.goal-item.completed {
+  border-left-color: var(--income);
+}
+
+.goal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.goal-name {
+  font-weight: 600;
+  color: var(--text);
+  font-size: 1rem;
+}
+
+.goal-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.goal-actions button {
+  width: auto;
+  padding: 4px 8px;
+  font-size: 0.9rem;
+  background: transparent !important;
+  color: var(--text-muted) !important;
+  border: none !important;
+}
+
+.goal-actions button:hover {
+  background: transparent !important;
+  color: var(--accent) !important;
+}
+
+.goal-actions .del-goal:hover { color: var(--expense) !important; }
+
+.goal-numbers {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.goal-progress-bar {
+  background: var(--card-bg);
+  border-radius: 999px;
+  height: 12px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.goal-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), #60a5fa);
+  border-radius: 999px;
+  transition: width 0.4s ease;
+}
+
+.goal-item.completed .goal-progress-fill {
+  background: linear-gradient(90deg, var(--income), #34d399);
+}
+
+.goal-percent {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-align: right;
+  font-weight: 600;
+}
+
+.goal-add-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.goal-add-row input {
+  flex: 1;
+}
+
+.goal-add-row button {
+  width: auto;
+  padding: 10px 16px;
+  font-size: 0.85rem;
+  background: var(--accent) !important;
+  color: #fff !important;
+}
+
+/* ============ МОДАЛЬНОЕ ОКНО НАСТРОЕК ============ */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  backdrop-filter: blur(4px);
+}
+
+.modal.active {
+  display: flex;
+}
+
+.modal-content {
+  background: var(--card-bg);
+  color: var(--text);
+  border-radius: 12px;
+  width: 100%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border);
+}
+
+.modal-header h2 {
+  font-size: 1.1rem;
+  margin: 0;
+  color: var(--text);
+}
+
+.close-btn {
+  width: auto !important;
+  padding: 4px 10px;
+  background: transparent !important;
+  color: var(--text-muted) !important;
+  border: none !important;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.close-btn:hover {
+  background: transparent !important;
+  color: var(--expense) !important;
+}
+
+.modal-body {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.setting-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.setting-row label {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+.data-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.data-buttons button {
+  width: 100%;
+  background: var(--progress-bg) !important;
+  color: var(--text) !important;
+  border: 1px solid var(--border) !important;
+}
+
+.data-buttons button:hover {
+  background: var(--accent) !important;
+  color: #fff !important;
+  border-color: var(--accent) !important;
+}
+
+.danger-btn {
+  color: var(--expense) !important;
+}
+.danger-btn:hover {
+  background: var(--expense) !important;
+  color: #fff !important;
+  border-color: var(--expense) !important;
+}
+
+/* ============ АДАПТИВ ============ */
+@media (min-width: 640px) {
+  .summary { grid-template-columns: repeat(3, 1fr); }
+  form { grid-template-columns: 1fr 1fr; }
+  form button[type="submit"] { grid-column: span 2; }
+  form .cancel-btn { grid-column: span 2; }
+  .data-buttons { flex-direction: row; }
+}
